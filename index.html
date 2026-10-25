@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Maaf untuk Cimittt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{--navy:#0B1426;--obsidian:#121417;--ink:#0A0C0F;--charcoal:#1C1F24;--line:#2A2F37;--frost:#9FD3FF;--silver:#C9D1D9;--mute:#7C8794;--snow:#E8EDF2;--pink:#F4B8D0;
+--sans:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'Geist Mono',ui-monospace,Menlo,monospace;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--silver);font:15px/1.5 var(--sans);padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px))}
+button{font:inherit;color:inherit}
+.wrap{max-width:420px;margin:0 auto}
+.stage{position:relative;width:100%;aspect-ratio:9/16;container-type:inline-size;overflow:hidden;border-radius:14px;border:1px solid var(--line);isolation:isolate;cursor:pointer;
+background:radial-gradient(ellipse at 50% 110%,rgba(244,184,208,.16),transparent 60%),linear-gradient(180deg,var(--navy),var(--obsidian) 65%,#0e1014)}
+.stage.paused *{animation-play-state:paused!important}
+.vig{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(5,7,10,.55))}
+.dust{position:absolute;inset:0;z-index:1;overflow:hidden}
+.dust i{position:absolute;bottom:-3cqw;width:.9cqw;height:.9cqw;border-radius:50%;background:var(--frost);opacity:0;animation:up var(--t) linear var(--dl) infinite}
+@keyframes up{0%{opacity:0;transform:translate(0,0)}15%{opacity:.5}100%{opacity:0;transform:translate(var(--dx),-120cqw)}}
+#scenes{position:absolute;inset:0;z-index:2}
+.scene{position:absolute;inset:0;animation:sIn 1.2s ease-out both}
+.scene.out{opacity:0;filter:blur(6px);transition:opacity 1s,filter 1s}
+@keyframes sIn{from{opacity:0}to{opacity:1}}
+.tag{position:absolute;left:8cqw;top:9cqw;font:500 3cqw var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.txt{position:absolute;left:8cqw;right:8cqw;top:18cqw;color:var(--snow);font-weight:500;letter-spacing:-.02em;line-height:1.2}
+/* Motion utama: kata turun pelan lalu mengendap, seperti beban yang diletakkan */
+.w{display:inline-block;margin-right:.26em;opacity:0;animation:sink 1.5s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d)}
+@keyframes sink{0%{opacity:0;transform:translateY(-5cqw) scale(1.06);filter:blur(7px)}60%{opacity:1}100%{opacity:1;transform:none;filter:none}}
+.w.hl{color:var(--pink);text-shadow:0 0 4cqw rgba(244,184,208,.45)}
+.mono{font-family:var(--mono)}
+/* Chat */
+.chat{position:absolute;left:7cqw;right:7cqw;top:22cqw;display:grid;gap:3cqw}
+.chat h4{margin:0 0 1cqw;font:500 3cqw var(--mono);letter-spacing:.08em;color:var(--mute);text-transform:uppercase;animation:sIn 1s both}
+.bub{max-width:88%;background:var(--charcoal);border:1px solid #2c323b;border-radius:1.5cqw 4cqw 4cqw 4cqw;padding:3cqw 3.6cqw;font:400 4cqw/1.35 var(--sans);color:var(--silver);
+animation:slideIn 1.4s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d)}
+.bub small{display:block;margin-bottom:1cqw;font:400 2.6cqw var(--mono);color:var(--mute)}
+@keyframes slideIn{from{opacity:0;transform:translateX(-9cqw);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
+/* Kesempatan yang padam satu per satu */
+.chances{position:absolute;left:8cqw;right:8cqw;bottom:24cqw;display:flex;gap:4cqw;align-items:center}
+.chances i{width:5cqw;height:5cqw;border-radius:50%;background:var(--frost);box-shadow:0 0 4cqw rgba(159,211,255,.7);animation:snuff 1.6s ease-in both;animation-delay:var(--d)}
+@keyframes snuff{0%{opacity:1}30%{opacity:1}100%{opacity:.12;box-shadow:none;background:#3a414b}}
+.chances span{margin-left:auto;font:500 3cqw var(--mono);letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
+/* Gema kata maaf */
+.echo{position:absolute;left:8cqw;right:8cqw;bottom:20cqw;font:600 13cqw/1 var(--sans);letter-spacing:-.04em;color:var(--snow)}
+.echo span{display:block;opacity:0;animation:echo 5s ease-out forwards;animation-delay:var(--d)}
+@keyframes echo{0%{opacity:0;transform:translateX(-4cqw);filter:blur(8px)}20%{opacity:var(--o)}100%{opacity:calc(var(--o)*.5);transform:none;filter:none}}
+/* Cincin napas */
+.ring{position:absolute;left:50%;bottom:22cqw;width:34cqw;height:34cqw;margin-left:-17cqw;display:grid;place-items:center}
+.ring b{position:absolute;inset:0;border-radius:50%;border:1px solid var(--frost);animation:breathe 6s ease-in-out infinite}
+.ring b:nth-child(2){animation-delay:-2s;border-color:var(--pink);opacity:.6}
+.ring b:nth-child(3){animation-delay:-4s;opacity:.35}
+@keyframes breathe{0%,100%{transform:scale(.5);opacity:.2}50%{transform:scale(1);opacity:.9}}
+.ring em{font:500 2.8cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-style:normal;text-align:center}
+/* Penutup */
+.end{position:absolute;left:8cqw;right:8cqw;top:20cqw}
+.end .big{font:600 11cqw/1.05 var(--sans);letter-spacing:-.03em;color:var(--snow)}
+.end .nm{color:var(--pink);text-shadow:0 0 5cqw rgba(244,184,208,.5)}
+.end p{margin:5cqw 0 0;font:400 4.4cqw/1.4 var(--sans);color:var(--silver);animation:fade 2s 3.4s both}
+.end .full{font:500 3cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);animation:fade 2s 5s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.start{position:absolute;inset:0;z-index:7;display:grid;place-content:center;justify-items:center;gap:5cqw;text-align:center;background:rgba(10,12,15,.6);backdrop-filter:blur(3px)}
+.start[hidden]{display:none}
+.start .fn{font:500 3cqw var(--mono);letter-spacing:.08em;color:var(--mute)}
+.start h2{margin:0;font:600 10cqw/1.05 var(--sans);letter-spacing:-.03em;color:var(--snow)}
+.start h2 em{font-style:normal;color:var(--pink)}
+.pbtn{width:16cqw;height:16cqw;border-radius:50%;border:1px solid var(--frost);background:rgba(159,211,255,.08);color:var(--frost);display:grid;place-items:center;cursor:pointer}
+.pbtn svg{width:42%;height:42%}
+.prog{height:6px;border-radius:3px;background:#1a1d22;margin-top:14px;overflow:hidden}
+.prog div{height:100%;width:0;background:var(--frost)}
+.ctl{display:flex;gap:8px;margin-top:12px;align-items:center}
+.b{background:var(--charcoal);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font:500 13px var(--mono);letter-spacing:.04em;cursor:pointer}
+.ctl span{margin-left:auto;font:12px var(--mono);color:var(--mute)}
+@media (prefers-reduced-motion:reduce){.dust,.ring b{display:none}.w,.bub{animation-duration:.01s}}
+
+.aur{position:absolute;inset:0;z-index:0;overflow:hidden}
+.aur b{position:absolute;width:80cqw;height:80cqw;border-radius:50%;filter:blur(14cqw);opacity:.35;animation:drift 18s ease-in-out infinite alternate}
+.aur b:nth-child(1){background:#2a4f8a;left:-25cqw;top:-10cqw}
+.aur b:nth-child(2){background:#7a3a5f;right:-30cqw;bottom:5cqw;animation-delay:-6s;animation-duration:22s}
+.aur b:nth-child(3){background:#1d3a66;left:20cqw;top:70cqw;width:60cqw;height:60cqw;animation-delay:-11s}
+@keyframes drift{to{transform:translate(18cqw,-14cqw) scale(1.25)}}
+.grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(159,211,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(159,211,255,.05) 1px,transparent 1px);background-size:10cqw 10cqw;-webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 45%,#000 25%,transparent 75%);animation:gridm 14s linear infinite}
+@keyframes gridm{to{background-position:0 10cqw,10cqw 0}}
+.rip{position:absolute;left:50%;bottom:-10cqw;z-index:0}
+.rip b{position:absolute;left:-30cqw;top:-30cqw;width:60cqw;height:60cqw;border-radius:50%;border:1px solid rgba(244,184,208,.5);opacity:0;animation:rp 9s ease-out infinite}
+.rip b:nth-child(2){animation-delay:3s}.rip b:nth-child(3){animation-delay:6s}
+@keyframes rp{0%{opacity:.7;transform:scale(.2)}100%{opacity:0;transform:scale(3.2)}}
+.scan{position:absolute;left:0;right:0;top:0;height:.4cqw;z-index:3;background:linear-gradient(90deg,transparent,rgba(159,211,255,.5),transparent);animation:scn 8s linear infinite}
+@keyframes scn{from{transform:translateY(-2cqw)}to{transform:translateY(180cqw)}}
+.tcr{position:absolute;right:8cqw;top:9cqw;z-index:4;font-size:3cqw;letter-spacing:.1em;color:var(--mute)}
+.dust i:nth-child(3n){width:1.6cqw;height:1.6cqw;background:var(--pink);filter:blur(1px)}
+.thr{position:absolute;left:0;width:100%;bottom:9cqw;height:14cqw}
+.thr path,.heart path{fill:none;stroke:var(--frost);stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:1;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(159,211,255,.8));animation:draw 5s 1s ease-in-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.cn{position:absolute;width:5cqw;height:5cqw;border:0 solid var(--frost);opacity:0;animation:cn 1.4s .2s ease-out forwards}
+.cn.a{left:4cqw;top:4cqw;border-width:1px 0 0 1px}.cn.b{right:4cqw;top:4cqw;border-width:1px 1px 0 0}
+.cn.c{left:4cqw;bottom:4cqw;border-width:0 0 1px 1px}.cn.d{right:4cqw;bottom:4cqw;border-width:0 1px 1px 0}
+@keyframes cn{to{opacity:.55}}
+.heart{position:absolute;left:50%;bottom:16cqw;width:46cqw;margin-left:-23cqw;overflow:visible}
+.heart path{stroke:var(--pink);stroke-width:1.6;filter:drop-shadow(0 0 8px rgba(244,184,208,.9));animation:draw 4s 1.5s ease-in-out forwards,beat 2.4s 6s ease-in-out infinite}
+@keyframes beat{50%{filter:drop-shadow(0 0 16px rgba(244,184,208,1))}}
+.fh{position:absolute;bottom:10cqw;width:2.4cqw;height:2.4cqw;background:var(--pink);border-radius:50%;opacity:0;animation:fl 6s var(--d) ease-out infinite}
+@keyframes fl{0%{opacity:0;transform:translateY(0)}20%{opacity:.8}100%{opacity:0;transform:translateY(-70cqw) scale(.4)}}
+.mute{color:var(--mute);font-size:.8em}
+.end{top:14cqw}
+
+.vz{position:absolute;left:8cqw;width:84cqw;bottom:19cqw;height:40cqw;overflow:visible}
+.vz .halo{transform-box:fill-box;transform-origin:center;animation:hb 4s ease-in-out infinite}
+@keyframes hb{50%{transform:scale(1.35);opacity:.6}}
+.vz .orb{filter:drop-shadow(0 0 2px rgba(255,255,255,.5))}
+.vz .nl{font:500 4px var(--mono);letter-spacing:.1px;fill:var(--mute)}
+.vz .nl.lg{fill:var(--snow)}
+.vz .nl.big{font-size:4.6px;fill:var(--pink)}
+.vz .pkl{fill:var(--pink)}
+.vz .fd{opacity:0;animation:fade 1.4s calc(var(--b,0s) + var(--dl,0s)) forwards}
+.vz .lb{opacity:0;fill:var(--silver);animation:fade 1s calc(var(--b,0s) + var(--dl,0s)) forwards}
+.vz .th{fill:none;stroke:url(#tg);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 2px rgba(200,200,255,.9));animation:dr var(--dur,3s) calc(var(--b,0s) + var(--dl,0s)) ease-in-out forwards}
+.vz .th.blue{stroke:var(--frost)}.vz .th.pnk{stroke:var(--pink)}
+.vz .th.dis{stroke:var(--frost);animation:dr 0s forwards,dis 4s calc(var(--b,0s) + 2s) forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+@keyframes dis{to{opacity:0;stroke-dasharray:.02 .08}}
+.vz .tip{opacity:0;animation:fade .3s calc(var(--b,0s)) forwards;filter:drop-shadow(0 0 3px #fff)}
+.vz .star{transform-box:fill-box;transform-origin:center;animation:so 2.4s calc(var(--b,0s) + var(--dl)) forwards}
+@keyframes so{0%{opacity:1}35%{opacity:1;transform:scale(1.25)}100%{opacity:.14;transform:scale(.65)}}
+.vz .spark{fill:var(--frost);opacity:0;animation:fall 1.6s calc(var(--b,0s) + var(--dl)) ease-in forwards}
+@keyframes fall{0%{opacity:1}100%{opacity:0;transform:translate(var(--dx),20px)}}
+.vz .brick{fill:rgba(244,184,208,.14);stroke:var(--pink);stroke-width:.5;animation:bf 3.4s calc(var(--b,0s) + 1s) ease-in-out infinite}
+@keyframes bf{0%,36%,60%,100%{fill:rgba(244,184,208,.14)}42%{fill:rgba(244,184,208,.7)}}
+.vz .bump{animation:bump 3.4s calc(var(--b,0s) + 1s) ease-in-out infinite}
+@keyframes bump{0%,100%{transform:translateX(0)}38%,44%{transform:translateX(40px)}}
+.vz .shock{fill:none;stroke:var(--pink);stroke-width:.8;opacity:0;transform-box:fill-box;transform-origin:center;animation:sh 3.4s calc(var(--b,0s) + 1s) ease-out infinite}
+@keyframes sh{0%,37%{opacity:0;transform:scale(1)}40%{opacity:1}75%,100%{opacity:0;transform:scale(5)}}
+.vz .ff{fill:none;stroke:var(--pink);stroke-width:1;stroke-dasharray:2 2;animation:fd1 1s calc(var(--b,0s) + .5s) both,mv 2s linear infinite}
+.vz .ffg{fill:none;stroke:var(--pink);stroke-width:3;opacity:.25;animation:fp 2.4s ease-in-out infinite;filter:blur(1px)}
+@keyframes fd1{from{opacity:0}}@keyframes mv{to{stroke-dashoffset:-8}}@keyframes fp{50%{opacity:.5}}
+.vz .msg{animation:msg 2.2s calc(var(--b,0s) + .8s) cubic-bezier(.3,0,.2,1) both}
+@keyframes msg{from{transform:translateX(0)}to{transform:translateX(20px)}}
+.vz .x{fill:none;stroke:var(--pink);stroke-width:1.4;stroke-linecap:round}
+.vz .hp{fill:rgba(244,184,208,.12);stroke:var(--pink);stroke-width:5;stroke-dasharray:1;stroke-dashoffset:1;stroke-linejoin:round;filter:drop-shadow(0 0 20px rgba(244,184,208,.9));animation:dr 1.8s calc(var(--b,0s) + 1.4s) ease-in-out forwards,beat 1.6s calc(var(--b,0s) + 3.3s) ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}}
+.vz .rpl{fill:none;stroke:var(--pink);stroke-width:.5;opacity:0;transform-box:fill-box;transform-origin:center;animation:rp 3s calc(var(--b,0s) + var(--dl)) ease-out infinite}
+@keyframes rp{0%{opacity:.8;transform:scale(.6)}100%{opacity:0;transform:scale(3)}}
+.vz .lr{fill:none;stroke:#556070;stroke-width:.7;stroke-dasharray:1.5 1.5;animation:mv 1.2s linear infinite,lrf 2s calc(var(--b,0s) + 7.5s) forwards}
+@keyframes lrf{to{opacity:.15}}
+.vz .tick{stroke:var(--frost);stroke-width:.7;stroke-linecap:round}
+.vz .arr{fill:none;stroke:var(--pink);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+.vz .fr{animation:frm 6s calc(var(--b,0s) + 1.4s) ease-in-out forwards}
+@keyframes frm{to{transform:translateX(36px)}}
+.vz .dove{font-size:8px;opacity:0;animation:dv 6s calc(var(--b,0s) + 1.4s) ease-in-out forwards}
+@keyframes dv{0%{opacity:0;transform:translate(0,0)}25%{opacity:1}100%{opacity:0;transform:translate(46px,-14px)}}
+.vc{position:absolute;left:8cqw;right:8cqw;bottom:9cqw;text-align:center;font:500 3.7cqw/1.3 var(--sans);color:var(--silver);opacity:0;animation:fade 1.4s both}
+.flw{position:absolute;left:50%;top:50%;width:84cqw;height:84cqw;margin:-42cqw 0 0 -42cqw;z-index:1;pointer-events:none;opacity:.3;filter:drop-shadow(0 0 6cqw rgba(244,184,208,.35))}
+.flw svg{width:100%;height:100%;overflow:visible}
+.flw .fo ellipse{fill:url(#fp1);stroke:rgba(244,184,208,.6);stroke-width:.3}
+.flw .fi ellipse{fill:url(#fp1);stroke:rgba(255,255,255,.5);stroke-width:.3}
+.flw .fl{transform-box:view-box;transform-origin:50px 50px;animation:bloom 3s ease-out both,spin 120s linear 3s infinite}
+@keyframes bloom{from{transform:scale(.3) rotate(-60deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flw .fi{animation:brth 7s ease-in-out infinite;transform-box:view-box;transform-origin:50px 50px}
+@keyframes brth{50%{transform:scale(1.12)}}
+.heart path{vector-effect:none;transform-box:fill-box;transform-origin:center}
+.vz .cd{fill:rgba(159,211,255,.08);stroke:var(--frost);stroke-width:.6}
+.vz .cd.pk{fill:rgba(244,184,208,.1);stroke:var(--pink)}
+.vz .ct{font:600 4.6px var(--sans);fill:var(--snow)}
+.vz .ct.pkl{fill:var(--pink)}
+.vz .ar{fill:none;stroke:var(--silver);stroke-width:.9;stroke-linecap:round;stroke-linejoin:round}
+.vz .rt{fill:none;stroke:var(--pink);stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 1.6s calc(var(--b,0s) + var(--dl)) ease-in-out forwards,dim 1s calc(var(--b,0s) + 7s) forwards}
+.vz .rh{fill:none;stroke:var(--pink);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+.vz .cx{fill:none;stroke:var(--pink);stroke-width:1.6;stroke-linecap:round}
+@keyframes dim{to{opacity:.25}}
+.qt{position:absolute;left:8cqw;right:8cqw;top:15cqw;font:400 3.1cqw/1.4 var(--mono);color:var(--mute);border-left:1px solid var(--line);padding-left:3cqw;animation:sIn 1.2s both}
+.chat{top:30cqw}
+.bub{font-size:4.8cqw}
+.end .sig{margin:8cqw 0 0;font:600 10cqw/1 var(--sans);letter-spacing:-.02em;color:var(--pink);text-shadow:0 0 5cqw rgba(244,184,208,.5);animation:fade 2s 3.4s both}
+.end .full{margin:2cqw 0 0;font:500 3.2cqw var(--mono);letter-spacing:.06em;color:var(--mute);text-transform:none;animation:fade 2s 5s both}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="gI"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#9FD3FF"/><stop offset="1" stop-color="#3d7fc0"/></radialGradient><radialGradient id="gC"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#F4B8D0"/><stop offset="1" stop-color="#c4628f"/></radialGradient><radialGradient id="hI"><stop offset="0" stop-color="#9FD3FF" stop-opacity=".55"/><stop offset="1" stop-color="#9FD3FF" stop-opacity="0"/></radialGradient><radialGradient id="hC"><stop offset="0" stop-color="#F4B8D0" stop-opacity=".55"/><stop offset="1" stop-color="#F4B8D0" stop-opacity="0"/></radialGradient><linearGradient id="tg" gradientUnits="userSpaceOnUse" x1="14" y1="0" x2="86" y2="0"><stop offset="0" stop-color="#9FD3FF"/><stop offset="1" stop-color="#F4B8D0"/></linearGradient></defs></svg>
+<main class="wrap">
+  <div class="stage paused" id="stage" role="img" aria-label="Pesan permintaan maaf untuk Cimittt">
+    
+    <div class="flw" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><radialGradient id="fp1" cx=".5" cy="1" r="1"><stop offset="0" stop-color="#F4B8D0" stop-opacity=".05"/><stop offset=".6" stop-color="#F4B8D0" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity=".75"/></radialGradient><radialGradient id="fp2"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#F4B8D0"/></radialGradient></defs><g class="fl"><g class="fo"><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(0 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(45 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(90 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(135 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(180 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(225 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(270 50 50)"/><ellipse cx="50" cy="26" rx="8.5" ry="20" transform="rotate(315 50 50)"/></g><g class="fi"><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(22.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(67.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(112.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(157.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(202.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(247.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(292.5 50 50)"/><ellipse cx="50" cy="34" rx="5.5" ry="12" transform="rotate(337.5 50 50)"/></g><circle cx="50" cy="50" r="6" fill="url(#fp2)"/></g></svg></div>
+      <div id="scenes"></div>
+    <div class="vig"></div>
+    <div class="start" id="start">
+      <div class="fn">maaf_untuk_Cimittt.txt</div>
+      <h2>Maaf, <em>Cimitt</em></h2>
+      <button class="pbtn" id="big" aria-label="Putar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg></button>
+    </div>
+  </div>
+  <div class="prog"><div id="fill"></div></div>
+  <div class="ctl"><button class="b" id="play">Putar</button><button class="b" id="restart">Dari awal</button><button class="b" id="snd">Suara: hidup</button><span id="tc">1 / 10</span></div>
+</main>
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)}, stage=$('#stage'), host=$('#scenes'), start=$('#start');
+  var C=[['20/10 · 19.43','wmu wes tak ngei kesempatan lo gak mung sekali, tapi malah sakarepmu dewe, yo pie neh nek menurutmu aku koyo ngene aku ga iso mekso awaku dewe lah'],
+         ['20/10 · 19.43','yo mungkin emng wmu asline ngunu, wmu ga salah, emang ga cocok ae gausah dipekso kan aku wes omong timbang podo" loro ne'],
+         ['20/10 · 19.45','makane kat awal aku ngomong ga pengen, aku i ga gelem mleh koyo ngene'],
+         ['23/10 · 19.54','bisa ya chat biasa, kalau yang kaya deket aku gamau.. nanti keterusan trus balik kaya kemarin'],
+         ['23/10 · 19.55','loro yo.. gamau lagi aku😔']];
+  var S=[
+   {tag:'01 · maaf',q:'untuk Cimitt · Nooraida Tazky Liulinnuha',t:'Cimitt, aku mau minta maaf. Jujur, dan tanpa alasan.',hl:['maaf.','Cimitt,'],v:'apart',c:'Aku di sini, kamu di sana. Maaf ini kukirim dari jauh.'},
+   {tag:'02 · katamu',chat:[C[0]],title:'Kamu bilang'},
+   {tag:'03 · kesempatan',q:'↳ “wes tak ngei kesempatan, gak mung sekali”',t:'Kamu benar. Kamu sudah memberiku kesempatan bukan cuma sekali, dan aku menyia-nyiakannya. Aku mengulang hal yang sama dan melukaimu lagi.',v:'chances',c:'Kesempatan darimu padam satu per satu karena aku.'},
+   {tag:'04 · katamu',chat:[C[1]],title:'Kamu bilang'},
+   {tag:'05 · hatiku',q:'↳ “emang ga cocok ae, gausah dipekso”',t:'Aku paham maksudmu: kalau memang tidak cocok, tidak usah dipaksa daripada sama-sama sakit. Tapi hatiku berkata lain. Maaf, aku masih terus berharap kita bisa dekat seperti dulu lagi, atau malah lebih dekat.',v:'hati',c:'Aku paham, tapi hatiku belum bisa berhenti.'},
+   {tag:'06 · katamu',chat:[C[2]],title:'Kamu bilang'},
+   {tag:'07 · sudah menolak',q:'↳ “makane kat awal aku ngomong ga pengen”',t:'Dari awal kamu sudah bilang tidak mau. Itu penolakan, dan sudah jelas. Tapi aku tetap berusaha mendekatimu. Maaf, aku tidak menghargai jawabanmu.',v:'wall',c:'Setiap kali aku maju, jawabanmu tetap tidak.'},
+   {tag:'08 · katamu',chat:[C[3]],title:'Kamu bilang'},
+   {tag:'09 · batas',q:'↳ “chat biasa boleh, yang deket aku gamau”',t:'Chat biasa masih boleh. Aku mengerti itu caramu menjaga batas, supaya aku bisa melepaskanmu pelan-pelan, bukan karena kamu membuka pintu.',v:'bound',c:'Chat biasa boleh, dekat tidak. Itu caramu menjaga batas.'},
+   {tag:'10 · katamu',chat:[C[4]],title:'Kamu bilang'},
+   {tag:'11 · supaya tidak terulang',q:'↳ “loro yo.. gamau lagi aku”',t:'Kamu sakit, dan tidak mau mengulanginya. Aku mengerti: dekat, lalu jadi masalah, lalu sakit, begitu terus. Kamu menjauh supaya itu tidak terulang, dan itu wajar.',v:'loop',c:'Dekat membuat sakit. Menjauh supaya tidak terulang.'},
+   {tag:'12 · jujur',t:'Kalau kita berteman, aku tidak mau berjanji palsu bahwa aku tidak akan mencoba mendekatimu. Tapi menahan diri itu tugasku, bukan tugasmu.',v:'wait',c:'Aku menunggu di tempatku. Jaraknya ikut maumu.'},
+   {tag:'13 · bebas',t:'Kalau kamu merasa aku belum berubah, kamu boleh menjauh tanpa merasa bersalah. Kamu tidak perlu membalas pesan ini, aku tidak apa-apa. Maaf sudah membuatmu tidak nyaman terus.',v:'free',c:'Kamu bebas menjauh, tanpa harus membalas.'},
+   {tag:'14 · terima kasih',end:1}
+  ];
+  var O=function(x,y,c){return '<circle class="halo" cx="'+x+'" cy="'+y+'" r="9" fill="url(#h'+c+')"/><circle class="orb" cx="'+x+'" cy="'+y+'" r="4.5" fill="url(#g'+c+')"/>'};
+  var NM=function(x,t){return '<text class="nl" x="'+x+'" y="38" text-anchor="middle">'+t+'</text>'};
+  var N=NM(14,'Ipinn')+NM(86,'Cimitt');
+  var V=function(i){return '<svg class="vz" viewBox="0 0 100 46">'+i+'</svg>'};
+  var star=function(x,y){return 'M'+x+' '+(y-5)+'L'+(x+1.5)+' '+(y-1.5)+'L'+(x+5)+' '+y+'L'+(x+1.5)+' '+(y+1.5)+'L'+x+' '+(y+5)+'L'+(x-1.5)+' '+(y+1.5)+'L'+(x-5)+' '+y+'L'+(x-1.5)+' '+(y-1.5)+'Z'};
+  var ST=''; for(var i=0;i<5;i++){ var sx=14+i*18, dl=(1+i*1.1).toFixed(1);
+    ST+='<g class="star" style="--dl:'+dl+'s"><circle cx="'+sx+'" cy="16" r="8" fill="url(#hI)"/><path d="'+star(sx,16)+'" fill="url(#gI)"/></g>';
+    for(var k=0;k<4;k++) ST+='<circle class="spark" cx="'+sx+'" cy="16" r=".8" style="--dx:'+((k-1.5)*3)+'px;--dl:'+(+dl+1.5+k*.12).toFixed(2)+'s"/>';
+  }
+  var TK=''; for(var i=0;i<14;i++) TK+='<path class="tick fd" style="--dl:'+(i*.14).toFixed(2)+'s" d="M'+(24+i*4)+' 15 V21"/>';
+  var BR=''; for(var i=0;i<6;i++) BR+='<rect class="brick" x="60" y="'+(1+i*5.6)+'" width="6" height="5" rx="1"/>';
+  var VZ={
+   apart:V(O(14,18,'I')+O(86,18,'C')+'<path class="th" style="--dl:0s;--dur:3.4s" pathLength="1" d="M20 18 C28 10 36 26 46 18"/><circle r="1.8" fill="#fff" class="tip"><animateMotion dur="3.4s" begin="%B%s" fill="freeze" path="M20 18 C28 10 36 26 46 18"/></circle><text class="nl lg fd" style="--dl:3.4s" x="46" y="11" text-anchor="middle">maaf</text>'+N),
+   chances:V(ST+'<text class="nl fd" style="--dl:6s" x="50" y="42" text-anchor="middle">kesempatan yang kamu beri</text>'),
+   hati:V(O(14,18,'I')+O(86,18,'C')+'<path class="th blue" style="--dl:0s;--dur:1.6s" pathLength="1" d="M20 18 H38"/><text class="nl fd" style="--dl:.5s" x="29" y="12" text-anchor="middle">aku paham</text><g transform="translate(41 9) scale(.18)"><path class="hp" pathLength="1" d="M50 84 C10 56 4 30 22 15 C36 4 48 14 50 24 C52 14 64 4 78 15 C96 30 90 56 50 84Z"/></g><circle class="rpl" cx="50" cy="16.5" r="6" style="--dl:3s"/><circle class="rpl" cx="50" cy="16.5" r="6" style="--dl:4.5s"/><path class="th pnk" style="--dl:3.2s;--dur:2s" pathLength="1" d="M60 17 C68 17 72 18 81 18"/><text class="nl pkl fd" style="--dl:4.4s" x="50" y="44" text-anchor="middle">hatiku berkata lain</text>'+N),
+   wall:V(BR+O(14,18,'I').replace('<circle class="halo"','<circle class="halo"')+'<circle class="shock" cx="59" cy="18" r="2"/>'+O(86,18,'C')+'<text class="nl big fd" style="--dl:0s" x="63" y="45" text-anchor="middle">dari awal: TIDAK</text>').replace(O(14,18,'I'),'<g class="bump">'+O(14,18,'I')+'</g>'),
+   bound:V(O(14,18,'I')+O(86,18,'C')+'<path class="ffg" d="M56 0 V37"/><path class="ff" d="M56 0 V37"/><g class="msg"><rect x="21" y="13" width="11" height="8" rx="2.5" fill="url(#gI)"/><path d="M24 21 L23 24 L27 21Z" fill="#9FD3FF"/></g><text class="nl fd" style="--dl:2.6s" x="40" y="8" text-anchor="middle">chat biasa ✓</text><path class="x fd" style="--dl:2s" d="M70 13 L78 23 M78 13 L70 23"/><text class="nl pkl fd" style="--dl:2.4s" x="74" y="8" text-anchor="middle">dekat ✕</text>'+N),
+   loop:V('<g class="fd" style="--dl:0s"><rect class="cd" x="2" y="8" width="24" height="11" rx="3"/><text class="ct" x="14" y="15.3" text-anchor="middle">dekat</text></g><path class="ar fd" style="--dl:.8s" d="M27 13.5 H37 M34.5 11 L37 13.5 L34.5 16"/><g class="fd" style="--dl:1.4s"><rect class="cd" x="38" y="8" width="24" height="11" rx="3"/><text class="ct" x="50" y="15.3" text-anchor="middle">masalah</text></g><path class="ar fd" style="--dl:2.2s" d="M63 13.5 H73 M70.5 11 L73 13.5 L70.5 16"/><g class="fd" style="--dl:3s"><rect class="cd pk" x="74" y="8" width="24" height="11" rx="3"/><text class="ct pkl" x="86" y="15.3" text-anchor="middle">sakit</text></g><path class="rt" style="--dl:4s" pathLength="1" d="M86 20 V31 H14 V21.5"/><path class="rh fd" style="--dl:5.4s" d="M11.5 24 L14 21.5 L16.5 24"/><text class="nl fd" style="--dl:5.2s" x="30" y="28" text-anchor="middle">terulang lagi</text><path class="cx fd" style="--dl:7s" d="M46.5 27.5 L53.5 34.5 M53.5 27.5 L46.5 34.5"/><text class="nl big fd" style="--dl:7.4s" x="50" y="44" text-anchor="middle">jarak memutus lingkaran ini</text>'),
+   wait:V(O(14,18,'I')+O(86,18,'C')+TK+'<path class="arr fd" style="--dl:2s" d="M24 12 L21 18 L24 24 M76 12 L79 18 L76 24"/><text class="nl lg fd" style="--dl:2.4s" x="50" y="8" text-anchor="middle">jarak yang kamu pilih</text>'+N),
+   free:V(O(14,18,'I')+'<g class="fr">'+O(50,18,'C')+'</g><path class="th dis" style="--dl:0s" pathLength="1" d="M20 18 H44"/><text class="dove" x="38" y="16">🕊️</text><text class="nl" x="14" y="38" text-anchor="middle">Ipinn</text>')
+  };
+  var THR=['M0 15 C20 0 30 30 50 15 S80 0 100 15','M0 22 L20 22 L26 6 L34 26 L42 14 L50 22 L100 22','M0 8 C30 8 30 24 60 24 S85 8 100 8'];
+  var D=0;
+  S.forEach(function(s){
+    var n=s.t?s.t.split(/\s+/).length:0;
+    s.dur=s.end?14:s.chat?(4+s.chat.length*4.2):Math.max(7,n*.34+4.5)+(s.v==='loop'?3:0);
+    s.t0=D; D+=s.dur;
+  });
+  var t=0,cur=-1,playing=false,raf=0,last=0;
+
+  /* ---------- Audio: musik piano lembut + efek suara, disintesis langsung ---------- */
+  var CH=[[220,261.6,329.6,440],[174.6,220,261.6,349.2],[261.6,329.6,392,523.3],[196,246.9,293.7,392]], PAT=[0,2,1,3,2,1,3,2];
+  var A={ctx:null,on:true,
+   init:function(){
+    if(this.ctx) return; var C=window.AudioContext||window.webkitAudioContext; if(!C) return;
+    var c=this.ctx=new C(), self=this;
+    this.m=c.createGain(); this.m.gain.value=.9; this.m.connect(c.destination);
+    var L=Math.floor(c.sampleRate*2.8), rb=c.createBuffer(2,L,c.sampleRate);
+    for(var ch=0;ch<2;ch++){ var d=rb.getChannelData(ch); for(var i=0;i<L;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/L,2.6); }
+    this.rv=c.createConvolver(); this.rv.buffer=rb; var rg=c.createGain(); rg.gain.value=.6; this.rv.connect(rg); rg.connect(this.m);
+    this.mus=c.createGain(); this.mus.gain.value=.5; this.mus.connect(this.m); this.mus.connect(this.rv);
+    var nb=c.createBuffer(1,c.sampleRate,c.sampleRate), nd=nb.getChannelData(0); for(var j=0;j<nd.length;j++) nd[j]=Math.random()*2-1;
+    this.nb=nb; this.nt=c.currentTime+.3; this.step=0;
+    this.tm=setInterval(function(){ self.sched(); },200);
+   },
+   go:function(){ if(!this.ctx) return; this.ctx.resume(); this.mus.gain.setTargetAtTime(.5,this.ctx.currentTime,.5); },
+   hold:function(){ if(this.ctx) this.ctx.suspend(); },
+   fade:function(){ if(this.ctx) this.mus.gain.setTargetAtTime(0,this.ctx.currentTime+5,2); },
+   setOn:function(v){ this.on=v; if(this.ctx) this.m.gain.setTargetAtTime(v?.9:0,this.ctx.currentTime,.1); },
+   o:function(f,t,d,v,ty,f2,dest){
+    var c=this.ctx, o=c.createOscillator(), g=c.createGain(); o.type=ty||'sine'; o.frequency.setValueAtTime(f,t);
+    if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g); g.connect(dest); o.start(t); o.stop(t+d+.05);
+   },
+   sched:function(){
+    var c=this.ctx; if(!c||c.state!=='running') return;
+    while(this.nt<c.currentTime+.6){
+     var bar=Math.floor(this.step/8)%4, k=this.step%8, ch=CH[bar], t=this.nt;
+     if(k===0) this.pad(ch[0]/2,t,3.7);
+     this.o(ch[PAT[k]],t,1.8,.07,'triangle',0,this.mus); this.o(ch[PAT[k]]*2,t,1,.02,'sine',0,this.mus);
+     this.nt+=.46; this.step++;
+    }
+   },
+   pad:function(f,t,d){
+    var c=this.ctx, o=c.createOscillator(), g=c.createGain(); o.type='sine'; o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(.1,t+.9); g.gain.linearRampToValueAtTime(.0001,t+d+.6);
+    o.connect(g); g.connect(this.mus); o.start(t); o.stop(t+d+.7);
+   },
+   scene:function(i){
+    var c=this.ctx; if(!c) return; var now=c.currentTime;
+    if(this.sg) this.sg.gain.setTargetAtTime(0,now,.15);
+    var sg=this.sg=c.createGain(); sg.connect(this.m); var r=c.createGain(); r.gain.value=.5; sg.connect(r); r.connect(this.rv);
+    var self=this, S0=S[i], n=S0.t?S0.t.split(/\s+/).length:0, b=now+(S0.t?(0.3+n*.17+.5):1);
+    var tn=function(f,t,d,v,ty,f2){ self.o(f,t,d,v,ty,f2,sg); };
+    var ns=function(t,d,v,f1,f2){
+     var s=c.createBufferSource(), bp=c.createBiquadFilter(), g=c.createGain(); s.buffer=self.nb; s.loop=true;
+     bp.type='bandpass'; bp.Q.value=1.2; bp.frequency.setValueAtTime(f1,t); bp.frequency.exponentialRampToValueAtTime(f2,t+d);
+     g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(v,t+d*.4); g.gain.linearRampToValueAtTime(.0001,t+d);
+     s.connect(bp); bp.connect(g); g.connect(sg); s.start(t); s.stop(t+d+.1);
+    };
+    tn(196,now+.1,1.4,.05,'triangle');
+    if(S0.chat){ tn(1318,now+1,.25,.12); tn(1760,now+1.1,.35,.1); return; }
+    if(S0.end){ [262,330,392,523].forEach(function(f,k){ tn(f,now+.2+k*.12,6,.07,'triangle'); }); tn(1047,now+3.4,3,.05); tn(1319,now+5,3,.04); return; }
+    var v=S0.v, k, t;
+    if(v==='apart'){ ns(b,3.4,.05,300,1800); tn(880,b+3.4,2,.1); tn(1318,b+3.45,2.2,.06); }
+    if(v==='chances'){ [988,880,784,659,523].forEach(function(f,q){ var tt=b+1+q*1.1+.7; tn(f,tt,2.4,.1); tn(f*2,tt,1.2,.03); for(var z=0;z<3;z++) tn(2000+Math.random()*1500,tt+1.4+z*.12,.2,.025); }); }
+    if(v==='hati'){ ns(b,1.6,.04,400,900); tn(110,b+1.4,1.8,.1); tn(784,b+3.2,1.5,.05); for(k=0;k<6;k++){ t=b+3.3+k*1.6; tn(70,t,.18,.3,'sine',45); tn(60,t+.22,.16,.22,'sine',40); } }
+    if(v==='wall'){ for(k=0;k<4;k++){ t=b+1+k*3.4+1.3; tn(140,t,.35,.4,'sine',38); ns(t,.12,.12,200,60); } }
+    if(v==='bound'){ ns(b+.8,2.2,.05,500,2000); tn(523,b+2.6,.3,.05); tn(1046,b+3,.5,.08); tn(98,b+.5,6,.04,'triangle'); }
+    if(v==='loop'){ [262,330,392].forEach(function(f,q){ tn(f,b+[0,1.4,3][q],1.2,.08); }); ns(b+4,1.6,.04,300,900); tn(392,b+5.4,.6,.05); tn(110,b+7,.8,.3,'sine',45); tn(523,b+7,1.8,.08); tn(392,b+7.2,2,.06); }
+    if(v==='wait'){ for(k=0;k<14;k++) tn(1200+k*40,b+k*.14,.08,.04); tn(659,b+2.4,2.4,.07); tn(988,b+2.5,2.4,.05); }
+    if(v==='free'){ ns(b+1.4,6,.045,300,2500); tn(523,b+1.4,5,.04,'triangle',784); for(k=0;k<5;k++) tn(1500+Math.random()*2000,b+2+k*.7,.3,.025); }
+   }
+  };
+
+
+  function words(txt,hl){
+    return txt.split(/\s+/).map(function(w,i){
+      var h=hl&&hl.indexOf(w.replace(/[.,]/g,''))>-1;
+      return '<span class="w'+(h?' hl':'')+'" style="--d:'+(0.3+i*.17).toFixed(2)+'s">'+w+'</span>';
+    }).join('');
+  }
+  function build(s){
+    var h='<div class="tag">'+s.tag+'</div>', n=s.t?s.t.split(/\s+/).length:0;
+    if(s.t){
+      var fs=n>34?5:n>22?5.6:7;
+      if(s.q) h+='<div class="qt">'+s.q+'</div>';
+      h+='<div class="txt" style="font-size:'+fs+'cqw;top:'+(s.q?25:18)+'cqw">'+words(s.t,s.hl)+'</div>';
+    }
+    if(s.chat){
+      h+='<div class="chat"><h4>'+s.title+'</h4>'+s.chat.map(function(m,i){
+        return '<div class="bub" style="--d:'+(1+i*3.4)+'s"><small>Cimittt✨ · '+m[0]+'</small>'+m[1]+'</div>';
+      }).join('')+'</div>';
+    }
+    if(s.x==='chances'){ h+='<div class="chances">'+[0,1,2,3,4].map(function(i){return '<i style="--d:'+(3.5+i*.9)+'s"></i>'}).join('')+'<span>kesempatan</span></div>'; }
+    if(s.x==='echo'){ h+='<div class="echo"><span style="--d:3.5s;--o:.9">maaf</span><span style="--d:5s;--o:.55">maaf</span><span style="--d:6.5s;--o:.3">maaf</span></div>'; }
+    if(s.x==='ring'){ h+='<div class="ring"><b></b><b></b><b></b><em>pelan-pelan</em></div>'; }
+    if(s.c) h+='<div class="vc" style="animation-delay:'+(0.8+n*.17+1.2).toFixed(1)+'s">'+s.c+'</div>';
+    if(s.end){
+      h+='<svg class="heart" viewBox="0 0 100 90"><path pathLength="1" d="M50 84 C10 56 4 30 22 15 C36 4 48 14 50 24 C52 14 64 4 78 15 C96 30 90 56 50 84Z"/></svg>'+
+         '<div class="end"><div class="big">'+words('Terima kasih atas semuanya, dan maaf.')+'</div>'+
+         '<p class="sig">Ipinnn 🐢</p><p class="full">(Fikri Abdul Ghaniyyul Barru)</p></div>'+
+         [0,1,2,3,4,5,6,7].map(function(i){return '<i class="fh" style="left:'+(10+i*11)+'%;--d:'+(3+i*.7)+'s"></i>'}).join('');
+    }
+    if(s.v){ var bb=s.t?(0.3+n*.17+.5):1; h+=VZ[s.v].replace('<svg class="vz"','<svg class="vz" style="--b:'+bb.toFixed(1)+'s"').replace('%B%',(bb+.5).toFixed(1)); }
+    return h;
+  }
+  function render(i){
+    var old=host.querySelector('.scene');
+    if(old){ old.classList.add('out'); setTimeout(function(){ if(old.parentNode) old.parentNode.removeChild(old); },1000); }
+    var d=document.createElement('div'); d.className='scene'; d.innerHTML=build(S[i]); host.appendChild(d);
+    $('#tc').textContent=(i+1)+' / '+S.length; cur=i; A.scene(i);
+  }
+  function tick(now){
+    var dt=Math.min(.1,(now-last)/1000); last=now; t+=dt;
+    if(t>=D){ t=D; $('#fill').style.width='100%'; finish(); return; }
+    var i=0; for(var k=0;k<S.length;k++) if(t>=S[k].t0) i=k;
+    if(i!==cur) render(i);
+    $('#fill').style.width=(t/D*100)+'%';
+    raf=requestAnimationFrame(tick);
+  }
+  function play(){
+    if(t>=D-.01){ t=0; cur=-1; host.innerHTML=''; }
+    start.hidden=true; playing=true; A.init(); A.go(); stage.classList.remove('paused'); $('#play').textContent='Jeda';
+    last=performance.now(); cancelAnimationFrame(raf); raf=requestAnimationFrame(tick);
+  }
+  function pause(){ A.hold(); playing=false; cancelAnimationFrame(raf); stage.classList.add('paused'); $('#play').textContent='Putar'; }
+  function finish(){ A.fade(); playing=false; stage.classList.add('paused'); $('#play').textContent='Putar ulang'; stage.classList.remove('paused'); }
+  function toggle(){ playing?pause():play(); }
+  $('#play').addEventListener('click',toggle);
+  $('#big').addEventListener('click',function(e){ e.stopPropagation(); play(); });
+  stage.addEventListener('click',function(){ if(!start.hidden) return; toggle(); });
+  $('#restart').addEventListener('click',function(){ t=0; cur=-1; host.innerHTML=''; play(); });
+  $('#snd').addEventListener('click',function(){ A.setOn(!A.on); this.textContent='Suara: '+(A.on?'hidup':'mati'); });
+  var dust=document.createElement('div');
+  for(var q=0;q<0;q++){
+    var p=document.createElement('i');
+    p.style.cssText='left:'+(Math.random()*100).toFixed(0)+'%;--t:'+(14+Math.random()*10).toFixed(1)+'s;--dl:-'+(Math.random()*20).toFixed(1)+'s;--dx:'+((Math.random()-.5)*14).toFixed(1)+'cqw';
+    dust.appendChild(p);
+  }
+})();
+</script>
+</body></html>
